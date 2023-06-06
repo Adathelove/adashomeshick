@@ -1,0 +1,8 @@
+BASHRC_LIB_DIR=".bashrclib.dir"
+BASHRC_LIB_DIR_PATH="${HOME}/${BASHRC_LIB_DIR}"
+if [ ! -L $BASHRC_LIB_DIR_PATH ] ; then
+    echo "Boot strapping our homesick bashrc lib dir"
+    ln -sv ~/.homesick/repos/dotfiles/home/$BASHRC_LIB_DIR $BASHRC_LIB_DIR_PATH
+fi
+
+source ${BASHRC_LIB_DIR_PATH}/dot.bashrc.kitchen_sink
