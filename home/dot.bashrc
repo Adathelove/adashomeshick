@@ -1,3 +1,5 @@
+#!/usr/bin/bash
+
 ADASHOMESHICK_PREFIX=dot
 ADASHOMESHICK_NAME=adashomeshick
 HOMESHICK_MAIN=$ADASHOMESHICK_NAME
@@ -8,7 +10,7 @@ BASHRC_SRC="${ADASHOMESHICK_PREFIX}${BASHRC_NAM}"
 BASHRC_DST="${BASHRC_HME}"
 
 BASHRC_LIB_NAM=".bashrclib"
-BASHRC_LIB_HME="${HOME}${BASHRC_LIB_NAM}"
+BASHRC_LIB_HME="${HOME}/${BASHRC_LIB_NAM}"
 BASHRC_LIB_SRC="${ADASHOMESHICK_PREFIX}${BASHRC_LIB_NAM}"
 BASHRC_LIB_DST="${BASHRC_LIB_HME}"
 
@@ -33,6 +35,8 @@ if [ ! -L "${BASHRC_LIB_DST}" ] ; then
     ln -sv ${BASHRC_LIB_SRC_PATH} ${BASHRC_LIB_DST}
 fi
 
-echo "[*] source $BASHRC_LIB_SRC_PATH"
-source $BASHRC_LIB_SRC_PATH
+echo "[*] source BASHRC_LIB_HME = \"${BASHRC_LIB_HME}\""
+source $BASHRC_LIB_HME
+alias basheditbashrclib="vi ${BASHRC_LIB_HME}"
 
+#[ -f ~/.fzf.bash ] && source ~/.fzf.bash

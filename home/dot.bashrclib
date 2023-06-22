@@ -1,30 +1,120 @@
+#!/usr/bin/bash
 
-echo "================  link up and source lib dir  ==================="
+###########
+# GLOBALS #
+###########
 
 BASHRC_LIB_DIR_NAM=".bashrclib.dir"
-BASHRC_LIB_DIR_HME="${HOME}G${BASHRC_LIB_DIR_NAM}"
+BASHRC_LIB_DIR_HME="${HOME}/${BASHRC_LIB_DIR_NAM}"
 BASHRC_LIB_DIR_SRC="${ADASHOMESHICK_PREFIX}${BASHRC_LIB_DIR_NAM}"
 BASHRC_LIB_DIR_DST="${BASHRC_LIB_DIR_HME}"
-
+BASHRC_LIB_DIR_DST_PATH="${BASHRC_LIB_DIR_HME}"
 
 BASHRC_LIB_DIR_SRC_PATH="${HOME}/.homesick/repos/$HOMESHICK_MAIN/home/${BASHRC_LIB_DIR_SRC}"
 
-if [ -e ${BASHRC_LIB_DIR_DST} ] ; then
-	echo "[*] BASHRC_LIB_DIR_DST = ${BASHRC_LIB_DIR_DST} $(file ${BASHRC_LIB_DIR_DST})"
-else
-	echo "[W] BASHRC_LIB_DIR_DST = \"${BASHRC_LIB_DIR_DST}\" doesn't exist!"
-fi
+####################################################
+# Useful for this module and can be used in others #
+####################################################
+function bashrclib_source()
+{
 
-if [ -e ${BASHRC_LIB_DIR_SRC_PATH} ] ; then
-	echo "[*] BASHRC_LIB_DIR_SRC_PATH = ${BASHRC_LIB_DIR_SRC_PATH} $(file ${BASHRC_LIB_DIR_SRC_PATH})"
-    if [ ! -L "${BASHRC_LIB_DIR_DST}" ] ; then
-        echo "[*] Boot strapping our homesick bashrc lib"
-        echo "[*] ln -sv ${BASHRC_LIB_DIR_SRC_PATH} ${BASHRC_LIB_DIR_DST}"
-        ln -sv ${BASHRC_LIB_DIR_SRC_PATH} ${BASHRC_LIB_DIR_DST}
+    local script_to_source_name=$1
+    local script_to_source_path=${BASHRC_LIB_DIR_DST_PATH}
+    local script_to_source_file=${script_to_source_path}/${script_to_source_name}
+
+    if [ -z "${script_to_source_file}" ] ; then return 2 ; fi
+    if [ -z "${script_to_source_name}" ] ; then return 3 ; fi
+    if [ -z "${script_to_source_path}" ] ; then return 4 ; fi
+    if [ ! -r ${script_to_source_file} ] ; then return 5 ; fi
+    source ${script_to_source_file}
+}
+
+#################################
+# Required for THIS script file #
+#################################
+function bootstrap_symlinking()
+{
+    if [ -e ${BASHRC_LIB_DIR_DST_PATH} ] ; then
+        echo "[*] BASHRC_LIB_DIR_DST_PATH = ${BASHRC_LIB_DIR_DST_PATH} $(file ${BASHRC_LIB_DIR_DST_PATH})"
+    else
+        echo "[W] BASHRC_LIB_DIR_DST_PATH = \"${BASHRC_LIB_DIR_DST_PATH}\" doesn't exist!"
     fi
-else
-	echo "[F] BASHRC_LIB_DIR_SRC_PATH = \"${BASHRC_LIB_DIR_SRC_PATH}\" doesn't exist!"
-fi
 
-echo "[*] source ${BASHRC_LIB_DIR_SRC_PATH}/dot.bashrc.kitchen_sink"
-source ${BASHRC_LIB_DIR_SRC_PATH}/dot.bashrc.kitchen_sink
+    if [ -e ${BASHRC_LIB_DIR_SRC_PATH} ] ; then
+        echo "[*] BASHRC_LIB_DIR_SRC_PATH = ${BASHRC_LIB_DIR_SRC_PATH} $(file ${BASHRC_LIB_DIR_SRC_PATH})"
+        if [ ! -L "${BASHRC_LIB_DIR_DST_PATH}" ] ; then
+            echo "[*] Boot strapping our homesick bashrc lib"
+            echo "[*] ln -sv ${BASHRC_LIB_DIR_SRC_PATH} ${BASHRC_LIB_DIR_DST_PATH}"
+            ln -sv ${BASHRC_LIB_DIR_SRC_PATH} ${BASHRC_LIB_DIR_DST_PATH}
+        fi
+    else
+        echo "[F] BASHRC_LIB_DIR_SRC_PATH = \"${BASHRC_LIB_DIR_SRC_PATH}\" doesn't exist!"
+    fi
+}
+
+function common_scripts_that_are_like_builtins()
+{
+    alias basheditbashrclibdir="vi $BASHRC_LIB_DIR_DST_PATH"
+    alias bashgotobashrclibdir="cd $BASHRC_LIB_DIR_DST_PATH"
+}
+
+############################################
+# Optional "file based functional options" #
+############################################
+function common_scripts_that_should_always_work()
+{
+    bashrclib_source dot.bashrc.chmod
+    bashrclib_source dot.bashrc.history
+    bashrclib_source dot.bashrc.ls
+    bashrclib_source dot.bashrc.hostname
+    bashrclib_source dot.bashrc.ps1
+    bashrclib_source dot.bashrc.homeshick
+}
+
+function git_functions()
+{
+    #echo source ${BASHRC_LIB_DIR_DST_PATH}/dot.bashrc.git.dir/dot.bashrc.git.bootstrap
+    #source ${BASHRC_LIB_DIR_DST_PATH}/dot.bashrc.git.dir/dot.bashrc.git.config
+    bashrclib_source "dot.bashrc.git.dir/dot.bashrc.git.config"
+    bashrclib_source "dot.bashrc.git.dir/dot.bashrc.git.alias"
+}
+
+function fzf_functions()
+{
+    bashrclib_source "dot.bashrc.fzf"
+    bashrclib_source "dot.bashrc.fzf.ls"
+}
+
+function ssh_functions()
+{
+    bashrclib_source "dot.bashrc.ssh.dir/dot.bashrc.ssh_agent"
+}
+
+######################
+# Init this "module" #
+######################
+function init()
+{
+
+    bootstrap_symlinking
+    common_scripts_that_are_like_builtins
+    common_scripts_that_should_always_work
+    git_functions
+    fzf_functions
+    ssh_functions
+    # sudo dnf install fzf
+    #source ${BASHRC_LIB_DIR_DST_PATH}/dot.bashrc.kitchen_sink
+}
+
+#
+# Run this "module"
+#
+function main()
+{
+    init $*
+}
+
+#
+# Actually execute this "module"
+#
+main $*
