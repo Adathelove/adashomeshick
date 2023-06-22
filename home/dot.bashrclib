@@ -1,8 +1,30 @@
-BASHRC_LIB_DIR=".bashrclib.dir"
-BASHRC_LIB_DIR_PATH="${HOME}/${BASHRC_LIB_DIR}"
-if [ ! -L $BASHRC_LIB_DIR_PATH ] ; then
-    echo "Boot strapping our homesick bashrc lib dir"
-    ln -sv ~/.homesick/repos/dotfiles/home/$BASHRC_LIB_DIR $BASHRC_LIB_DIR_PATH
+
+echo "================  link up and source lib dir  ==================="
+
+BASHRC_LIB_DIR_NAM=".bashrclib.dir"
+BASHRC_LIB_DIR_HME="${HOME}G${BASHRC_LIB_DIR_NAM}"
+BASHRC_LIB_DIR_SRC="${ADASHOMESHICK_PREFIX}${BASHRC_LIB_DIR_NAM}"
+BASHRC_LIB_DIR_DST="${BASHRC_LIB_DIR_HME}"
+
+
+BASHRC_LIB_DIR_SRC_PATH="${HOME}/.homesick/repos/$HOMESHICK_MAIN/home/${BASHRC_LIB_DIR_SRC}"
+
+if [ -e ${BASHRC_LIB_DIR_DST} ] ; then
+	echo "[*] BASHRC_LIB_DIR_DST = ${BASHRC_LIB_DIR_DST} $(file ${BASHRC_LIB_DIR_DST})"
+else
+	echo "[W] BASHRC_LIB_DIR_DST = \"${BASHRC_LIB_DIR_DST}\" doesn't exist!"
 fi
 
-source ${BASHRC_LIB_DIR_PATH}/dot.bashrc.kitchen_sink
+if [ -e ${BASHRC_LIB_DIR_SRC_PATH} ] ; then
+	echo "[*] BASHRC_LIB_DIR_SRC_PATH = ${BASHRC_LIB_DIR_SRC_PATH} $(file ${BASHRC_LIB_DIR_SRC_PATH})"
+    if [ ! -L "${BASHRC_LIB_DIR_DST}" ] ; then
+        echo "[*] Boot strapping our homesick bashrc lib"
+        echo "[*] ln -sv ${BASHRC_LIB_DIR_SRC_PATH} ${BASHRC_LIB_DIR_DST}"
+        ln -sv ${BASHRC_LIB_DIR_SRC_PATH} ${BASHRC_LIB_DIR_DST}
+    fi
+else
+	echo "[F] BASHRC_LIB_DIR_SRC_PATH = \"${BASHRC_LIB_DIR_SRC_PATH}\" doesn't exist!"
+fi
+
+echo "[*] source ${BASHRC_LIB_DIR_SRC_PATH}/dot.bashrc.kitchen_sink"
+source ${BASHRC_LIB_DIR_SRC_PATH}/dot.bashrc.kitchen_sink
