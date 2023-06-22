@@ -1,0 +1,4 @@
+#!/usr/bin/bash
+
+source "$HOME/.homesick/repos/homeshick/homeshick.sh"
+alias homeshick_cd_dotfiles="pushd . && homeshick cd dotfiles"

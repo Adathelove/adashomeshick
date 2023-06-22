@@ -1,0 +1,43 @@
+BASHRC="~/.bashrc"
+
+export SOURCE_DIR_SYSTEM="$HOME/bin/"
+source $SOURCE_DIR_SYSTEM/includer.sh
+# script_include util.sh
+
+
+alias vi=vim
+
+PRE_GO="clear"
+POST_GO="pwd"
+alias gobin="${PRE_GO} && cd ~/bin/ && ${POST_GO}"
+
+
+BASHRC_BIN_PATHS=~/bin/bin_paths.sh
+source ${BASHRC_BIN_PATHS}
+
+alias bashsource="source ${BASHRC}"
+alias bashedit="vi ${BASHRC} && read -p\"Source it?\" && bashsource"
+alias bashgrep="grep $* ${BASHRC}"
+alias basheditbinpaths="vi ${BASHRC_BIN_PATHS} && read -p\"Source it?\" && source ${BASHRC_BIN_PATHS}"
+
+alias vimedit="vi ~/.vimrc"
+alias vimpart="vi ~/.vimrc_parts"
+
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash
+
+
+alias adas_pull="cd ~/dotfiles && git pull && cd ~/adaslove && git pull && cd ~/NeptunesCloud/ && git pull"
+
+
+BASHRC_HOST_SPECIFICS="$HOME/.bashrc.$(hostname -s)"
+alias bashedithostspecifics="vi $BASHRC_HOST_SPECIFICS"
+if [ -r "${BASHRC_HOST_SPECIFICS}" ] ; then
+    echo "source /"${BASHRC_HOST_SPECIFICS}/""
+    source "${BASHRC_HOST_SPECIFICS}"
+else
+    echo "can NOT source "${BASHRC_HOST_SPECIFICS}/""
+    #indent "$(ls -l ${BASHRC_HOST_SPECIFICS})"
+fi
+
+alias syi="sudo yum install"
+

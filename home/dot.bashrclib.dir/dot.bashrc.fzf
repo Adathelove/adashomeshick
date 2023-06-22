@@ -1,0 +1,23 @@
+#!/usr/bin/bash
+
+function fzf_install()
+{
+    which fzf 2>/dev/null && return 1
+    read -p"Install fzf?"
+    #sudo dnf install fzf # doesn't work on AmazonLinux
+    git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+    ~/.fzf/install
+}
+
+
+function fzf_init()
+{
+    fzf_install && [ -f ~/.fzf.bash ] && source ~/.fzf.bash
+}
+
+function fzf_main()
+{
+    fzf_init $*
+}
+
+fzf_main $*

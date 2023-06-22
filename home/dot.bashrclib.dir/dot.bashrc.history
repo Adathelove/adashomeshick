@@ -1,0 +1,4 @@
+alias hw="history -w"
+alias hg="history | grep"
+alias h="history"
+

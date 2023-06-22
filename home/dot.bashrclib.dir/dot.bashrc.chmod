@@ -1,0 +1,4 @@
+#!/usr/bin/bash
+
+alias can_exec="chmod u+x $1"
+
