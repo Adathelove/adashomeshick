@@ -35,20 +35,20 @@ function bashrclib_source()
 function bootstrap_symlinking()
 {
     if [ -e ${BASHRC_LIB_DIR_DST_PATH} ] ; then
-        echo "[*] BASHRC_LIB_DIR_DST_PATH = ${BASHRC_LIB_DIR_DST_PATH} $(file ${BASHRC_LIB_DIR_DST_PATH})"
+        dot_bashrc_isdebug && echo "[*] BASHRC_LIB_DIR_DST_PATH = ${BASHRC_LIB_DIR_DST_PATH} $(file ${BASHRC_LIB_DIR_DST_PATH})"
     else
-        echo "[W] BASHRC_LIB_DIR_DST_PATH = \"${BASHRC_LIB_DIR_DST_PATH}\" doesn't exist!"
+        dot_bashrc_isdebug && echo "[W] BASHRC_LIB_DIR_DST_PATH = \"${BASHRC_LIB_DIR_DST_PATH}\" doesn't exist!"
     fi
 
     if [ -e ${BASHRC_LIB_DIR_SRC_PATH} ] ; then
-        echo "[*] BASHRC_LIB_DIR_SRC_PATH = ${BASHRC_LIB_DIR_SRC_PATH} $(file ${BASHRC_LIB_DIR_SRC_PATH})"
+        dot_bashrc_isdebug && echo "[*] BASHRC_LIB_DIR_SRC_PATH = ${BASHRC_LIB_DIR_SRC_PATH} $(file ${BASHRC_LIB_DIR_SRC_PATH})"
         if [ ! -L "${BASHRC_LIB_DIR_DST_PATH}" ] ; then
-            echo "[*] Boot strapping our homesick bashrc lib"
-            echo "[*] ln -sv ${BASHRC_LIB_DIR_SRC_PATH} ${BASHRC_LIB_DIR_DST_PATH}"
+            dot_bashrc_isdebug && echo "[*] Boot strapping our homesick bashrc lib"
+            dot_bashrc_isdebug && echo "[*] ln -sv ${BASHRC_LIB_DIR_SRC_PATH} ${BASHRC_LIB_DIR_DST_PATH}"
             ln -sv ${BASHRC_LIB_DIR_SRC_PATH} ${BASHRC_LIB_DIR_DST_PATH}
         fi
     else
-        echo "[F] BASHRC_LIB_DIR_SRC_PATH = \"${BASHRC_LIB_DIR_SRC_PATH}\" doesn't exist!"
+        dot_bashrc_isdebug && echo "[F] BASHRC_LIB_DIR_SRC_PATH = \"${BASHRC_LIB_DIR_SRC_PATH}\" doesn't exist!"
     fi
 }
 
@@ -90,6 +90,16 @@ function ssh_functions()
     bashrclib_source "dot.bashrc.ssh.dir/dot.bashrc.ssh_agent"
 }
 
+function boot_install()
+{
+    bashrclib_source "dot.bashrc.boot.dir/dot.bashrc.boot_install"
+}
+
+function vim_functions()
+{
+    bashrclib_source "dot.bashrc.vim.dir/dot.bashrc.vim.aliases"
+}
+
 ######################
 # Init this "module" #
 ######################
@@ -102,6 +112,8 @@ function init()
     git_functions
     fzf_functions
     ssh_functions
+    #boot_install
+    vim_functions
     # sudo dnf install fzf
     #source ${BASHRC_LIB_DIR_DST_PATH}/dot.bashrc.kitchen_sink
 }
