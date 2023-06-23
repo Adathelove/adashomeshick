@@ -1,0 +1,4 @@
+
+alias vi=vim
+alias vimedit="vi ~/.vimrc"
+
