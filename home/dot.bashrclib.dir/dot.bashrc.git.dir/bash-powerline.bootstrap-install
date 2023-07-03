@@ -1,0 +1,4 @@
+#!/usr/bin/bash
+
+# https://github.com/riobard/bash-powerline
+curl https://raw.githubusercontent.com/riobard/bash-powerline/master/bash-powerline.sh > dot.bash-powerline.sh

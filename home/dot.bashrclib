@@ -63,8 +63,8 @@ function common_scripts_that_are_like_builtins()
 ############################################
 function common_scripts_that_should_always_work()
 {
-    bashrclib_source dot.bashrc.chmod
     bashrclib_source dot.bashrc.history
+    bashrclib_source dot.bashrc.chmod
     bashrclib_source dot.bashrc.ls
     bashrclib_source dot.bashrc.hostname
     bashrclib_source dot.bashrc.ps1
@@ -77,6 +77,7 @@ function git_functions()
     #source ${BASHRC_LIB_DIR_DST_PATH}/dot.bashrc.git.dir/dot.bashrc.git.config
     bashrclib_source "dot.bashrc.git.dir/dot.bashrc.git.config"
     bashrclib_source "dot.bashrc.git.dir/dot.bashrc.git.alias"
+    bashrclib_source "dot.bashrc.git.dir/dot.bash-powerline.sh"
 }
 
 function fzf_functions()

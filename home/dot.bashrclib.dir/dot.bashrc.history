@@ -2,3 +2,14 @@ alias hw="history -w"
 alias hg="history | grep"
 alias h="history"
 
+
+# https://ss64.com/bash/history.html
+# https://ss64.com/bash/shopt.html
+# https://ostechnix.com/how-to-enable-timestamp-in-bash-history-in-linux/#:~:text=To%20enable%20timestamp%20in%20Bash%20history%20in%20Linux%2C%20you%20need,with%20each%20displayed%20history%20entry.&text=Here%2C%20the%20%25F%20option%20is,%2DMonth%2DDate)%20format.
+# https://stackoverflow.com/questions/9457233/unlimited-bash-history
+# 
+# 
+# export HISTSIZE=9999
+unset HISTSIZE 
+unset HISTFILESIZE
+shopt -s histappend
